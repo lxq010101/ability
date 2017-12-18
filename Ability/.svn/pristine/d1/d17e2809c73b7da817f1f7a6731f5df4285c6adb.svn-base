@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <script src="bridge.js"></script>
+    <script>
+			function getUserInfos() {
+				Mplat.getUserInfos(function(data) {
+					alert(data);
+				});
+			}
+
+			function takePhoto() {
+				alert("takePhoto方法开始执行。。。");
+				Mplat.takePhoto({
+					params: {
+						"keyword": "ceshi",
+						"waterMarkFlag": "ceshi2",
+						"waterMarkInfo": "ceshi3"
+					},
+					callback: function(data) {
+						alert(data);
+					}
+				});
+			}
+
+				function scanGetCode() {
+				Mplat.scanGetCode({
+                    callback: function(data) {
+						alert(data);
+					}
+				});
+			}
+
+
+
+
+		function pickPic() {
+				Mplat.pickPic({
+					params: {
+						"picNum": 8,
+						"keyword": "ceshi"
+					},
+					callback: function(data) {
+						alert(data);
+					}
+				});
+			}
+
+
+			function showLoading() {
+				Mplat.showLoading({
+					params: {
+						"showInfo": "正在加载请稍后",
+						"isCancel":true
+
+					}
+
+				});
+			}
+
+
+			function cancelLoading() {
+				Mplat.cancelLoading();
+			}
+
+
+
+			function telephoneCall() {
+				Mplat.telephoneCall({
+				params: {
+						"telNum":"13966338251",
+						"callFlag":1
+					}
+					});
+			}
+
+
+			function getLocationInfo() {
+				Mplat.getLocationInfo();
+			}
+
+
+    </script>
+</head>
+
+<body>
+<h1>测试</h1>
+<div>
+    <button onclick="getUserInfos();">获取登录信息</button>
+</div>
+<div>
+    <button onclick="takePhoto();">拍照</button>
+</div>
+<div>
+    <button onclick="scanGetCode();">二维码</button>
+</div>
+<div>
+    <button onclick="pickPic();">选择图片</button>
+</div>
+<div>
+    <button onclick="showLoading();">加载框</button>
+</div>
+<div>
+    <button onclick="cancelLoading();">取消加载框</button>
+</div>
+<div>
+    <button onclick="telephoneCall();">拨打手机号码</button>
+</div>
+<div>
+    <button onclick="getLocationInfo();">定位</button>
+</div>
+
+
+</body>
+
+</html>

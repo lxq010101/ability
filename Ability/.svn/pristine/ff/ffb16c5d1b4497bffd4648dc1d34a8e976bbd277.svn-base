@@ -1,0 +1,82 @@
+apply plugin: 'com.android.library'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'maven'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "26.0.0"
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+configurations.all {
+    resolutionStrategy.force 'com.android.support:support-annotations:23.1.0'
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    //core包引用的------------开始----------------------
+    compile 'log4j:log4j:1.2.17'
+    compile 'org.apache.httpcomponents:httpcore:4.4.2'
+    compile 'net.lingala.zip4j:zip4j:1.3.2'
+    //core包引用的------------结束----------------------
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    testCompile 'junit:junit:4.12'
+    compile 'com.sdsmdg.tastytoast:tastytoast:0.1.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.5'
+    //Retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    //Gson converter
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    //Okhttp
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
+    //RxJava　adapter
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.alibaba:fastjson:1.2.35'
+    compile 'com.github.bumptech.glide:glide:4.1.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.github.lovetuzitong:MultiImageSelector:1.2'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'top.zibin:Luban:1.1.3'
+    compile files('libs/ZBarDecoder.jar')
+    compile files('libs/zxing-4.7.3.jar')
+}
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            //本地maven仓库地址,也可以使用远程maven仓库
+            repository(url: "file://localhost/" + System.getenv("ANDROID_HOME")
+                    + "/extras/android/m2repository/")
+            pom.groupId = 'com.ustcinfo.mobile.platform'
+            pom.artifactId = 'Ability-relesae'
+            pom.version = '1.0'
+        }
+    }
+}

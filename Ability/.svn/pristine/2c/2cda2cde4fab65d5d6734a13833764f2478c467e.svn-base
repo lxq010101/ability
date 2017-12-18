@@ -1,0 +1,28 @@
+package com.ustcinfo.mobile.platform.ability.retrofit;
+
+
+import com.alibaba.fastjson.JSONObject;
+
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
+import rx.Observable;
+
+/**
+ * Created by lixq on 2016/9/21.
+ */
+public interface    ApiStores {
+    //桑磊机器
+//    String BASE_URL = "http://192.168.0.105:8080/";
+    //生产环境
+//    String BASE_URL = "http://192.168.216.22:8180/eip-app-anhui/";
+    String BASE_URL  =  "http://192.168.80.190:8887/eip-app-web/";
+//    String BASE_URL = "http://192.168.1.104:8080/";
+
+
+    @POST("static/index/api/getAnnouncementInfoList")
+    @FormUrlEncoded
+    Observable<JSONObject> getAnnouncements(@Field("data") String data);
+
+
+}

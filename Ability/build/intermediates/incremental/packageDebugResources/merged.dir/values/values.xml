@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="alpha_80_black">#CC000000</color>
+    <color name="app_style">#03233b</color>
+    <color name="black">#000</color>
+    <color name="color_1a98ff">#1a98ff</color>
+    <color name="color_3c3c3c">#3c3c3c</color>
+    <color name="color_999999">#999999</color>
+    <color name="color_d8dbdf">#d8dbdf</color>
+    <color name="font_gray">#999999</color>
+    <color name="keyboard_blackground">#bababa</color>
+    <color name="product_list_bac">#efeef4</color>
+    <color name="transparent">#00000000</color>
+    <color name="txt_orange">#ff6800</color>
+    <color name="white">#FFFFFF</color>
+    <dimen name="barcode_crop_height">140dp</dimen>
+    <dimen name="barcode_crop_width">260dp</dimen>
+    <dimen name="qrcode_crop_height">200dp</dimen>
+    <dimen name="qrcode_crop_width">200dp</dimen>
+    <string name="app_name">Ability</string>
+    <string name="barcode">条形码</string>
+    <string name="btn_light">灯光</string>
+    <string name="btn_picture">图片</string>
+    <string name="error_barcode">解析失败</string>
+    <string name="photo_exception">获取图片失败</string>
+    <string name="qrcode">二维码</string>
+    <string name="sdcard_exception">没找到内存卡</string>
+    <string name="tv_load">努力加载中......</string>
+    <style name="AppDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/bg_default_dialog</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowSoftInputMode">stateHidden|adjustResize</item>
+    </style>
+    <style name="AppDialog.Loading">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+    <style name="Dialog" parent="android:style/Theme.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+</resources>

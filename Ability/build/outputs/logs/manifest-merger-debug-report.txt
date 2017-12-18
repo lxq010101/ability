@@ -1,0 +1,61 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:1:1-17:12
+INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:1:1-17:12
+INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:1:1-17:12
+INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:1:1-17:12
+INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:1:1-17:12
+INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:1:1-17:12
+INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:1:1-17:12
+	package
+		ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:3:5-51
+		INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+		INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+		ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:1:1-17:12
+		INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+		ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:1:1-17:12
+		INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:1:11-69
+application
+ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:5:5-15:19
+	android:supportsRtl
+		ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:8:9-35
+	android:label
+		ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:7:9-41
+	android:allowBackup
+		ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:6:9-35
+activity#com.ustcinfo.mobile.platform.ability.jsbridge.WebViewActivity
+ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:9:9-62
+	android:name
+		ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:9:19-59
+activity#me.nereo.multi_image_selector.MultiImageSelectorActivity
+ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:10:9-12:62
+	android:configChanges
+		ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:12:13-59
+	android:name
+		ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:11:13-84
+activity#com.ustcinfo.mobile.platform.ability.qrcode.CaptureActivity
+ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:13:9-14:71
+	android:theme
+		ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:14:13-69
+	android:name
+		ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml:13:19-57
+uses-sdk
+INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+		ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+		INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+		ADDED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml
+		INJECTED from /Users/xueqili/Work/YLTX/MyApplication/Ability/src/main/AndroidManifest.xml

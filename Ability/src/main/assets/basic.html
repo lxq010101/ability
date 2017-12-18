@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <script src="bridge.js"></script>
+    <script>
+			function getUserInfos() {
+				Mplat.getUserInfos(function(data) {
+					alert(data);
+				});
+			}
+
+			function takePhoto() {
+				alert("takePhoto方法开始执行。。。");
+				Mplat.takePhoto({
+					params: {
+						"keyword": "ceshi",
+						"waterMarkFlag": "ceshi2",
+						"waterMarkInfo": "ceshi3"
+					},
+					callback: function(data) {
+						alert(data);
+					}
+				});
+			}
+
+				function scanGetCode() {
+				Mplat.scanGetCode({
+                    callback: function(data) {
+						alert(data);
+					}
+				});
+			}
+
+
+
+
+		function pickPic() {
+				Mplat.pickPic({
+					params: {
+						"picNum": 8,
+						"keyword": "ceshi"
+					},
+					callback: function(data) {
+						alert(data);
+					}
+				});
+			}
+
+
+			function showLoading() {
+				Mplat.showLoading({
+					params: {
+						"showInfo": "正在加载请稍后",
+						"isCancel":true
+
+					}
+
+				});
+			}
+
+
+			function cancelLoading() {
+				Mplat.cancelLoading();
+			}
+
+
+
+			function telephoneCall() {
+				Mplat.telephoneCall({
+				params: {
+						"telNum":"13966338251",
+						"callFlag":1
+					}
+					});
+			}
+
+
+			function getLocationInfo() {
+				Mplat.getLocationInfo();
+			}
+
+
+			function shortMessage() {
+				Mplat.shortMessage({
+				params: {
+						"telNum":"15385138251",
+						"smsBody":"你好你好"
+					}
+					});
+			}
+
+			function addressBook() {
+				Mplat.addressBook();
+			}
+			function getPhoneDeviceName() {
+				Mplat.getPhoneDeviceName(function(data) {
+					alert(data);
+				});
+			}
+
+            function createTableInfo() {
+				Mplat.createTableInfo({
+				params: {
+						"tableName":"demo",
+						"column":[{"name":"id","type":"int","isId":true,"isAutoIncrement":true},{"name":"name","type":"string","isId":false,"isAutoIncrement":false},{"name":"imgPath","type":"string","isId":false,"isAutoIncrement":false}]
+					}
+					});
+			}
+
+  function insertInfo() {
+				Mplat.insertInfo({
+				params: {
+						"tableName":"demo",
+						"column":[
+						           {"name":"name","type":"string","value":"小李"},
+						           {"name":"imgPath","type":"string","value":"http://mat1.gtimg.com/sports/nba/logo/new/8.png"}]
+					}
+					});
+			}
+
+  function selectInfos() {
+				Mplat.selectInfos({
+				params: {
+						"tableName":"demo",
+					},
+					callback: function(data) {
+						alert(data);
+					}
+					});
+			}
+
+  function deleteInfo() {
+				Mplat.deleteInfo({
+				params: {
+						"tableName":"demo",
+						"condition":{"name":"id","value":1,"type":"int"}
+					}
+					});
+			}
+    function updateInfo() {
+				Mplat.updateInfo({
+				params: {
+						"tableName":"demo",
+						"condition":{"name":"id","value":3,"type":"int"},
+						"column":[{"name":"name","type":"string","value":"小黄"},
+						           {"name":"imgPath","type":"string","value":"http://mat1.gtimg.com/sports/nba/logo/new/9.png"}]
+					}
+					});
+			}
+
+			 function dropTable() {
+				Mplat.dropTable({
+				params: {
+						"tableName":"demo",
+					}
+					});
+			}
+
+
+    </script>
+</head>
+
+<body>
+<h1>测试</h1>
+<div>
+    <button onclick="getUserInfos();">获取登录信息</button>
+</div>
+<div>
+    <button onclick="takePhoto();">拍照</button>
+</div>
+<div>
+    <button onclick="scanGetCode();">二维码</button>
+</div>
+<div>
+    <button onclick="pickPic();">选择图片</button>
+</div>
+<div>
+    <button onclick="showLoading();">加载框</button>
+</div>
+<div>
+    <button onclick="cancelLoading();">取消加载框</button>
+</div>
+<div>
+    <button onclick="telephoneCall();">拨打手机号码</button>
+</div>
+<div>
+    <button onclick="getLocationInfo();">定位</button>
+</div>
+<div>
+    <button onclick="shortMessage();">短信</button>
+</div>
+<div>
+    <button onclick="addressBook();">通讯录</button>
+</div>
+<div>
+    <button onclick="getPhoneDeviceName();">获取手机设备名称</button>
+</div>
+
+<div>
+    <button onclick="createTableInfo();">新建数据库实例</button>
+</div>
+<div>
+    <button onclick="selectInfos();">查询数据库</button>
+</div>
+<div>
+    <button onclick="insertInfo();">插入数据库</button>
+</div>
+
+<div>
+    <button onclick="deleteInfo();">删除某条数据</button>
+</div>
+
+<div>
+    <button onclick="updateInfo();">修改某条数据</button>
+</div>
+
+<div>
+    <button onclick="dropTable();">删除表</button>
+</div>
+</body>
+
+</html>

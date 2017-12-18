@@ -1,0 +1,286 @@
+package com.ustcinfo.mobile.platform.ability.jsbridge;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.sdsmdg.tastytoast.TastyToast;
+import com.ustcinfo.mobile.platform.ability.R;
+import com.ustcinfo.mobile.platform.ability.event.WebViewEvent;
+import com.ustcinfo.mobile.platform.ability.qrcode.CaptureActivity;
+import com.ustcinfo.mobile.platform.ability.utils.Path;
+import com.ustcinfo.mobile.platform.ability.widgets.LoadingDialog;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import me.nereo.multi_image_selector.MultiImageSelector;
+import rx.Observable;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
+
+/**
+ * Created by lxq on 2017/10/26.
+ */
+
+public class JsMethodAdapter {
+
+    private static JsMethodAdapter mInstance;
+
+    private BridgeWebView webView;
+    public static final String CODE = "CODE";
+
+    private static final int REQUEST_TAKE_PHOTO = 0x111;
+    private static final int REQUEST_PICK_PHOTO = 0x112;
+    private static final int REQUEST_CODE = 0x113;
+
+    private CallBackFunction callBackFunction;
+    private String photoPath;
+
+    private JSONObject json;
+
+    private JsMethodAdapter(BridgeWebView webView) {
+        this.webView = webView;
+    }
+
+    public static JsMethodAdapter getmInstance() {
+        return mInstance;
+    }
+
+    public static void register(BridgeWebView webView) {
+        if (mInstance == null) {
+            mInstance = new JsMethodAdapter(webView);
+        }
+        mInstance.init();
+    }
+
+    public static void unRegister() {
+        mInstance = null;
+    }
+
+
+    private void init() {
+        registerGetUserInfos();
+        registerTakePhotos();
+        registerBarCode();
+        registerPickPic();
+        registerShowLoading();
+        registerCancelLoading();
+        registerTelephoneCall();
+    }
+
+    /**
+     * getUserInfos 获取用户信息
+     */
+    private void registerGetUserInfos() {
+        webView.registerHandler("getUserInfos", new BridgeHandler() {
+            @Override
+            public void handler(String data, CallBackFunction function) {
+                WebViewEvent event = new WebViewEvent();
+                event.webView = webView;
+                event.key = "getUserInfos";
+                event.callBackFunction = function;
+                EventBus.getDefault().post(event);
+            }
+        });
+    }
+
+
+    /**
+     * 拍照
+     */
+    private void registerTakePhotos() {
+        webView.registerHandler("takePhoto", new BridgeHandler() {
+            @Override
+            public void handler(String data, CallBackFunction function) {
+                json = JSONObject.parseObject(data).getJSONObject("params");
+                ;
+                callBackFunction = function;
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File file = new File(Environment.getExternalStorageDirectory() + "/" + Path.PATH_DOWNLOAD_IMG);
+                if (!file.exists())
+                    file.mkdirs();// 创建文件夹
+                photoPath = file.getAbsolutePath() + "/" + json.getString("keyword") + "_" + System.currentTimeMillis() + ".jpg";
+                Uri uri = Uri.fromFile(new File(photoPath));
+                //为拍摄的图片指定一个存储的路径
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                ((Activity) webView.getContext()).startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+            }
+        });
+    }
+
+    /**
+     * 从相册选照片
+     */
+    private void registerPickPic() {
+        webView.registerHandler("pickPic", new BridgeHandler() {
+            @Override
+            public void handler(String data, CallBackFunction function) {
+                json = JSONObject.parseObject(data).getJSONObject("params");
+                callBackFunction = function;
+                MultiImageSelector.create()
+                        .showCamera(false)
+                        .count(json.getIntValue("picNum"))
+                        .start((Activity) webView.getContext(), REQUEST_PICK_PHOTO);
+            }
+        });
+    }
+
+
+    /**
+     * 扫码界面
+     */
+    private void registerBarCode() {
+        webView.registerHandler("scanGetCode", new BridgeHandler() {
+            @Override
+            public void handler(String data, CallBackFunction function) {
+                callBackFunction = function;
+                Intent intent = new Intent(webView.getContext(), CaptureActivity.class);
+                ((Activity) webView.getContext()).startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
+    }
+
+    /**
+     * 加载框
+     */
+    private void registerShowLoading() {
+        webView.registerHandler("showLoading", new BridgeHandler() {
+            @Override
+            public void handler(String data, CallBackFunction function) {
+                json = JSONObject.parseObject(data).getJSONObject("params");
+                LoadingDialog.show(webView.getContext(),json.getString("showInfo"),json.getBoolean("isCancel"));
+            }
+        });
+    }
+
+    /**
+     * 关闭加载框
+     */
+
+    private void registerCancelLoading() {
+        webView.registerHandler("cancelLoading", new BridgeHandler() {
+            @Override
+            public void handler(String data, CallBackFunction function) {
+                LoadingDialog.dismiss();
+            }
+        });
+    }
+
+
+    /**
+     * 拨打手机号码
+     * callFlag 1:直接跳至拨号页面
+                2:直接跳至拨打页面
+     */
+
+    private void registerTelephoneCall() {
+        webView.registerHandler("telephoneCall", new BridgeHandler() {
+            @Override
+            public void handler(String data, CallBackFunction function) {
+                json = JSONObject.parseObject(data).getJSONObject("params");
+                if(json.getIntValue("callFlag") == 1){
+                    Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + json.getString("telNum")));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    (webView.getContext()).startActivity(intent);
+                }else if(json.getIntValue("callFlag") == 2){
+                    Intent intentPhone = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + json.getString("telNum")));
+                    (webView.getContext()).startActivity(intentPhone);
+                }
+            }
+        });
+    }
+
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK)
+            switch (requestCode) {
+                case REQUEST_TAKE_PHOTO:
+
+
+                    Luban.with(webView.getContext())
+                            .load(new File(photoPath))                                   // 传人要压缩的图片列表
+                            .ignoreBy(100)                                  // 忽略不压缩图片的大小
+                            .setTargetDir(Environment.getExternalStorageDirectory() + "/" + Path.PATH_DOWNLOAD_IMG)                        // 设置压缩后文件存储位置
+                            .setCompressListener(new OnCompressListener() { //设置回调
+                                @Override
+                                public void onStart() {
+                                }
+
+                                @Override
+                                public void onSuccess(File file) {
+                                    // TODO 压缩成功后调用，返回压缩后的图片文件
+                                    JSONObject jsonObject = new JSONObject();
+                                    JSONObject photoInfo = new JSONObject();
+                                    photoInfo.put("photoName", file.getName());
+                                    photoInfo.put("photoPath", file.getAbsoluteFile());
+                                    jsonObject.put("data", photoInfo);
+                                    callBackFunction.onCallBack(jsonObject.toJSONString());
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    TastyToast.makeText(webView.getContext(), webView.getContext().getString(R.string.photo_exception), TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+                                }
+                            }).launch();    //启动压缩
+                    break;
+                case REQUEST_PICK_PHOTO:
+                    ArrayList<String> list = data.getStringArrayListExtra(MultiImageSelector.EXTRA_RESULT);
+                    List<File> files = new ArrayList<>();
+                    Luban.with(webView.getContext())
+                            .load(list)                             // 传人要压缩的图片列表
+                            .ignoreBy(100)                                  // 忽略不压缩图片的大小
+                            .setTargetDir(Environment.getExternalStorageDirectory() + "/" + Path.PATH_DOWNLOAD_IMG)                        // 设置压缩后文件存储位置
+                            .setCompressListener(new OnCompressListener() {
+                                @Override
+                                public void onStart() {
+
+                                }
+
+                                @Override
+                                public void onSuccess(File file) {
+                                    files.add(file);
+
+                                    if (files.size() == list.size()) {
+                                        JSONObject jsonObject = new JSONObject();
+                                        JSONArray photoInfos = new JSONArray();
+                                        Observable.from(files).subscribe(s -> {
+                                            JSONObject photoInfo = new JSONObject();
+                                            photoInfo.put("photoName", file.getName());
+                                            photoInfo.put("photoPath", file.getAbsoluteFile());
+                                            photoInfos.add(photoInfo);
+                                        });
+                                        jsonObject.put("data", photoInfos);
+                                        callBackFunction.onCallBack(jsonObject.toJSONString());
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable throwable) {
+                                    TastyToast.makeText(webView.getContext(), webView.getContext().getString(R.string.photo_exception), TastyToast.LENGTH_SHORT, TastyToast.ERROR);
+                                }
+                            })
+                            .launch();    //启动压缩
+
+                    break;
+
+                case REQUEST_CODE:
+                    JSONObject json = new JSONObject();
+                    json.put("data", data.getStringExtra(CODE));
+                    mInstance.callBackFunction.onCallBack(json.toJSONString());
+                    break;
+
+
+            }
+    }
+
+
+}

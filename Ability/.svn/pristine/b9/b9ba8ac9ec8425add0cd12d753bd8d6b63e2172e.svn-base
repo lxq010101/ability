@@ -1,0 +1,245 @@
+package com.ustcinfo.mobile.platform.ability.retrofit;
+
+
+import com.alibaba.fastjson.JSONObject;
+
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+import rx.Observable;
+
+/**
+ * Created by lixq on 2016/9/21.
+ */
+public interface ApiStores {
+    //桑磊机器
+//    String BASE_URL = "http://192.168.0.105:8080/";
+    //生产环境
+    String BASE_URL = "http://ylt.hcroad.com:80/";
+//    String BASE_URL = "http://192.168.1.104:8080/";
+
+
+    @POST("api/v0/register/smCode")
+    Observable<JSONObject> getVerifyCode(@Body JSONObject result);
+
+
+    //注册
+    @POST("api/v0/register")
+    Observable<JSONObject> register(@Path("id") int id, JSONObject jsonObject);
+
+    //忘记密码验证码
+    @POST("api/v0/findPwd/smCode")
+    Observable<JSONObject> getPwdVerifyCode(@Body JSONObject jsonObject);
+
+    //忘记密码
+    @POST("api/v0/findPwd")
+    Observable<JSONObject> resetPassword(@Body JSONObject jsonObject);
+
+    //地址
+    @GET("api/v0/area")
+    Observable<JSONObject> getAddress(@Query("pid") long pid);
+
+    //登录
+    @POST("api/v0/login")
+    Observable<JSONObject> login(@Body JSONObject jsonObject);
+
+    //刷新
+    @POST("api/v1/refresh")
+    Observable<JSONObject> refresh(@Body JSONObject jsonObject);
+
+    //获取新闻列表
+    @POST("api/v1/news/page")
+    Observable<JSONObject> getNews(@Body JSONObject jsonObject);
+
+    //获取新闻详情
+    @GET("api/v1/news/{id}")
+    Observable<JSONObject> getNewsDetail(@Path("id") long id);
+
+    //获取活动中心列表
+    @POST("api/v1/activity/page")
+    Observable<JSONObject> getActivity(@Body JSONObject jsonObject);
+
+    //获取活动详情
+    @GET("api/v1/activity/{id}")
+    Observable<JSONObject> getDetailActivities(@Path("id") long id);
+
+    //参加活动人员列表
+    @POST("api/v1/activity/{aid}/actRecord")
+    Observable<JSONObject> getActivityJoinList(@Path("aid") long aid, @Body JSONObject jsonObject);
+
+    //参加活动
+    @POST("api/v1/activity/{id}/join")
+    Observable<JSONObject> getActivityJoin(@Path("id") long id);
+
+    //获取首页banner
+    @POST("api/v1/banner")
+    Observable<JSONObject> getBanner();
+
+    //获取首页产品推荐
+    @POST("api/v1/medicine/page")
+    Observable<JSONObject> getMedicine(@Body JSONObject jsonObject);
+
+    //获取产品分类
+    @GET("api/v1/medicine/category")
+    Observable<JSONObject> getCategory();
+
+    //获取兑换商品列表
+    @POST("api/v1/gift/page")
+    Observable<JSONObject> getExchangeList(@Body JSONObject jsonObject);
+
+    //获取兑换参与人列表
+    @POST("api/v1/gift/{gid}/exRecord")
+    Observable<JSONObject> getExchangeJoinList(@Path("gid") long gid, @Body JSONObject jsonObject);
+
+    //获取兑换列表当前登录用户
+    @POST("api/v1/gift/exRecord")
+    Observable<JSONObject> getExchangeUserList(@Body JSONObject jsonObject);
+
+    //获取兑换参与人列表
+    @POST("api/v1/gift/{gid}/exchange")
+    Observable<JSONObject> getJoinExchange(@Path("gid") long gid);
+
+    //获取兑换商品详情
+    @GET("api/v1/gift/{id}")
+    Observable<JSONObject> getExchangeDetail(@Path("id") long id);
+
+    //获取产品详情
+    @GET("api/v1/medicine/{id}")
+    Observable<JSONObject> getDetailDrug(@Path("id") long id);
+
+    //获取基础信息-渠道
+    @GET("api/v0/channels")
+    Observable<JSONObject> getChannels();
+
+    //获取基础信息-重点关注
+    @GET("api/v0/focus")
+    Observable<JSONObject> getFocus();
+
+    //获取基础信息-熟悉科室
+    @GET("api/v0/offices")
+    Observable<JSONObject> getOffices();
+
+    //获取基础信息-团队规模
+    @GET("api/v0/teams")
+    Observable<JSONObject> getTeams();
+
+    //获取基础信息-负责区域最后一级医院
+    @GET("api/v0/charges/{aid}")
+    Observable<JSONObject> getCharges(@Path("aid") long aid);
+
+
+    //创建订单
+    @POST("api/v1/order/create")
+    Observable<JSONObject> createOrder(@Body JSONObject jsonObject);
+
+    //获取订单列表
+    @POST("api/v1/order/page")
+    Observable<JSONObject> getOrder(@Body JSONObject jsonObject);
+
+    //获取订单详情
+    @GET("api/v1/order/{id}")
+    Observable<JSONObject> getDetailOrder(@Path("id") long id);
+
+    //添加订单备注
+    @POST("api/v1/order/remark")
+    Observable<JSONObject> addRemark(@Body JSONObject jsonObject);
+
+    //获取七牛ToKen
+    @GET("api/v1/pic/token/{key}")
+    Observable<JSONObject> getQiNiuToken(@Path("key") String key);
+
+    //上传打款证明
+    @POST("api/v1/order/pay")
+    Observable<JSONObject> uploadPay(@Body JSONObject jsonObject);
+
+    //我的积分
+    @POST("api/v1/point/myRecord")
+    Observable<JSONObject> getPoint(@Body JSONObject jsonObject);
+
+    //新增收货地址
+    @POST("api/v1/address/create")
+    Observable<JSONObject> getAddressCreate(@Body JSONObject jsonObject);
+
+    //编辑收货地址
+    @POST("api/v1/address/update")
+    Observable<JSONObject> getAddressUpdate(@Body JSONObject jsonObject);
+
+    //获取收货地址列表
+    @POST("api/v1/address/page")
+    Observable<JSONObject> getAddressList(@Body JSONObject jsonObject);
+
+    //获取详细收货地址
+    @POST("api/v1/address/{id}")
+    Observable<JSONObject> getAddressDetail(@Path("id") long id);
+
+    //删除收货地址
+    @POST("api/v1/address/{id}/delete")
+    Observable<JSONObject> getAddressDelete(@Path("id") long id);
+
+    //设置默认收货地址
+    @POST("api/v1/address/{id}/setDefault")
+    Observable<JSONObject> setAddressDefault(@Path("id") long id);
+
+    //更新头像
+    @POST("api/v1/user/headPic")
+    Observable<JSONObject> updateHead(@Body JSONObject jsonObject);
+
+    //站内消息列表
+    @POST("api/v1/notice/page")
+    Observable<JSONObject> getNoticeList(@Body JSONObject jsonObject);
+
+    //根据id获取消息详细
+    @GET("api/v1/notice/{id}")
+    Observable<JSONObject> getNoticeDetail(@Path("id") long id);
+
+    //根据id删除消息
+    @POST("api/v1/notice/delete")
+    Observable<JSONObject> getNoticeDelete(@Body JSONObject jsonObject);
+
+    //修改密码
+    @POST("api/v1/changePwd")
+    Observable<JSONObject> changePassword(@Body JSONObject jsonObject);
+
+    //获得默认收货地址
+    @GET("/api/v1/address/getDefault")
+    Observable<JSONObject> getDefaultAddress();
+
+    //取消订单
+    @POST("/api/v1/order/cancel")
+    Observable<JSONObject> cancelOrder(@Body JSONObject jsonObject);
+
+    //确认收货
+    @POST("/api/v1/order/done")
+    Observable<JSONObject> doneOrder(@Body JSONObject jsonObject);
+
+    //用户认证
+    @POST("/api/v1/user/auth")
+    Observable<JSONObject> updateUser(@Body JSONObject jsonObject);
+
+    //关于我们
+    @GET("api/v0/{key}")
+    Observable<JSONObject> getContent(@Path("key") String key);
+
+    //客服电话
+    @GET("api/v1/support/telephone")
+    Observable<JSONObject> getTelephone();
+
+    //客服id
+    @GET("api/v1/support/online")
+    Observable<JSONObject> getServiceId();
+
+    //加密长链接
+    @FormUrlEncoded
+    @POST("api/v1/url/des")
+    Observable<JSONObject> des(@Field("url") String url);
+
+    //解密长链接
+    @FormUrlEncoded
+    @POST("api/v1/url/undes")
+    Observable<JSONObject> undes(@Field("url") String url);
+
+}

@@ -1,0 +1,64 @@
+package com.ustcinfo.mobile.platform.ability.apicallback;
+
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+
+import retrofit2.adapter.rxjava.HttpException;
+import rx.Subscriber;
+
+/**
+ * Created by Administrator on 2016/9/21.
+ */
+public class SubscriberCallBack<T> extends Subscriber<T> {
+    private ApiCallback<T> apiCallback;
+
+    public SubscriberCallBack(ApiCallback<T> apiCallback) {
+        this.apiCallback = apiCallback;
+    }
+
+
+    @Override
+    public void onCompleted() {
+        apiCallback.onCompleted();
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        if (e instanceof HttpException) {
+            HttpException httpException = (HttpException) e;
+            int code = httpException.code();
+            String msg = httpException.getMessage();
+            try {
+                msg = httpException.response().errorBody().string();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            if (code == 504)
+                msg = "网络不给力";
+            if (code == 401) {
+            }
+            if (code == 404)
+                msg = "服务器异常，请稍后重试...";
+            if (code == 500)
+                msg = "服务器错误，请稍后重试...";
+            apiCallback.onFailure(code, msg);
+        } else if (e instanceof ConnectException) {
+            apiCallback.netError();
+        } else if (e instanceof SocketTimeoutException) {
+            apiCallback.netError();
+        } else if (e instanceof UnknownHostException) {
+            apiCallback.netError();
+        } else {
+            apiCallback.onFailure(0, "系统错误，请稍后重试");
+            //apiCallback.onFailure(0, e.getMessage());
+        }
+        apiCallback.onCompleted();
+    }
+
+    @Override
+    public void onNext(T t) {
+        apiCallback.onSuccess(t);
+    }
+}

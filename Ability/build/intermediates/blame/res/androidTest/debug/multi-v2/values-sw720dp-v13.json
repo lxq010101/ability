@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/xueqili/Work/YLTX/MyApplication2/Ability/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-sw720dp-v13/values-sw720dp-v13.xml",
+            "map": [
+                {
+                    "source": "/Users/xueqili/.gradle/caches/transforms-1/files-1.1/MultiImageSelector-1.2.aar/d7639061189b3b6b6c55cdf0766a7467/res/values-sw720dp-v13/values-sw720dp-v13.xml",
+                    "from": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,108,155",
+                        "endColumns": "52,46,44",
+                        "endOffsets": "103,150,195"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/xueqili/Work/YLTX/MyApplication/Ability/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-sw720dp-v13/values-sw720dp-v13.xml",
+            "map": [
+                {
+                    "source": "/Users/xueqili/.gradle/caches/transforms-1/files-1.1/MultiImageSelector-1.2.aar/d7639061189b3b6b6c55cdf0766a7467/res/values-sw720dp-v13/values-sw720dp-v13.xml",
+                    "from": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,108,155",
+                        "endColumns": "52,46,44",
+                        "endOffsets": "103,150,195"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,57 @@
+package com.ustcinfo.mobile.platform.ability.retrofit;
+
+
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+public class AppClient {
+    public static Retrofit mRetrofit = null;
+    public static Retrofit mRetrofitString = null;
+
+    public static Retrofit retrofit() {
+        if (mRetrofit == null) {
+
+            mRetrofit = new Retrofit.Builder()
+                    .baseUrl(ApiStores.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .client(genericClient())
+                    .build();
+        }
+
+        return mRetrofit;
+    }
+
+    public static Retrofit retrofitString() {
+        if (mRetrofitString == null) {
+            mRetrofitString = new Retrofit.Builder()
+                    .baseUrl(ApiStores.BASE_URL)
+                    .addConverterFactory(StringConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .client(genericClient())
+                    .build();
+        }
+        return mRetrofitString;
+    }
+
+    private static OkHttpClient genericClient() {
+
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(chain -> {
+                    Request request;
+                    request = chain.request()
+                            .newBuilder()
+                            .addHeader("Content-Type", "application/json")
+                            .build();
+                    return chain.proceed(request);
+                })
+                .readTimeout(30, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .build();
+        return httpClient;
+    }
+}
