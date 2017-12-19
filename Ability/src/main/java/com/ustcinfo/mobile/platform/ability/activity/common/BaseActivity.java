@@ -64,7 +64,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends FragmentActi
                     overridePendingTransition(R.anim.bottom_in, R.anim.bottom_out);
                     break;
                 case SCALE:
-                    overridePendingTransition(R.anim.scale_in, R.anim.scale_out);
+                      overridePendingTransition(R.anim.scale_in, R.anim.scale_out);
                     break;
                 case FADE:
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
