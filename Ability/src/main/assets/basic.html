@@ -106,6 +106,8 @@
 				params: {
 						"tableName":"demo",
 						"column":[{"name":"id","type":"int","isId":true,"isAutoIncrement":true},{"name":"name","type":"string","isId":false,"isAutoIncrement":false},{"name":"imgPath","type":"string","isId":false,"isAutoIncrement":false}]
+					},callback: function(data) {
+						alert(data);
 					}
 					});
 			}
@@ -117,6 +119,8 @@
 						"column":[
 						           {"name":"name","type":"string","value":"小李"},
 						           {"name":"imgPath","type":"string","value":"http://mat1.gtimg.com/sports/nba/logo/new/8.png"}]
+					},callback: function(data) {
+						alert(data);
 					}
 					});
 			}
@@ -137,6 +141,8 @@
 				params: {
 						"tableName":"demo",
 						"condition":{"name":"id","value":1,"type":"int"}
+					},callback: function(data) {
+						alert(data);
 					}
 					});
 			}
@@ -147,6 +153,8 @@
 						"condition":{"name":"id","value":3,"type":"int"},
 						"column":[{"name":"name","type":"string","value":"小黄"},
 						           {"name":"imgPath","type":"string","value":"http://mat1.gtimg.com/sports/nba/logo/new/9.png"}]
+					},callback:function(data) {
+						alert(data);
 					}
 					});
 			}
@@ -155,6 +163,8 @@
 				Mplat.dropTable({
 				params: {
 						"tableName":"demo",
+					},callback: function(data) {
+						alert(data);
 					}
 					});
 			}

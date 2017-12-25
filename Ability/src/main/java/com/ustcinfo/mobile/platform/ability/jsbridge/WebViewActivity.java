@@ -5,15 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -55,6 +58,14 @@ public class WebViewActivity extends Activity implements OnClickListener {
         webView.setDefaultHandler(new DefaultHandler());
         // 设置setWebChromeClient对象
         webView.setWebChromeClient(wvcc);
+        webView.setWebViewClient(new HttpsWebClient(getApplicationContext()));
+        webView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                super.onReceivedSslError(view, handler, error);
+            }
+        });
 //		// WebView加载web资源
 //		path = "file://" + getIntent().getStringExtra("path");
         //工单调度

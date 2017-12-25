@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Environment;
@@ -12,6 +13,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.database.database.DataBaseManager;
@@ -47,6 +49,8 @@ public class JsMethodAdapter {
 
     private static JsMethodAdapter mInstance;
     private BridgeWebView webView;
+    public static final int SUCCESS = 0;
+    public static final int FAILD = 1;
     public static final String CODE = "CODE";
     private static final int REQUEST_TAKE_PHOTO = 0x111;
     private static final int REQUEST_PICK_PHOTO = 0x112;
@@ -60,7 +64,6 @@ public class JsMethodAdapter {
     private JsMethodAdapter(BridgeWebView webView) {
         this.webView = webView;
     }
-
     public static JsMethodAdapter getmInstance() {
         return mInstance;
     }
@@ -323,8 +326,21 @@ public class JsMethodAdapter {
                                     }
 
                                 }
+                                JSONObject jsonObject = new JSONObject();
 
-                                db.execSQL(sb.toString());
+
+                                try {
+
+                                    db.execSQL(sb.toString());
+                                    jsonObject.put("code",SUCCESS);
+                                    jsonObject.put("msg","生成成功");
+                                }catch (SQLException e){
+                                    jsonObject.put("code",FAILD);
+                                    jsonObject.put("msg","生成失败");
+                                }finally {
+                                    function.onCallBack(jsonObject.toJSONString());
+
+                                }
                             }
 
                             @Override
@@ -349,16 +365,16 @@ public class JsMethodAdapter {
                 json = JSONObject.parseObject(data).getJSONObject("params");
                 String tableName = json.getString("tableName");
                 JSONArray arrays = json.getJSONArray("column");
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("insert into ").append(tableName).append(" ( ");
-                    for (int i = 0; i < arrays.size(); i++) {
-                        JSONObject jsonObject = arrays.getJSONObject(i);
-                        sb.append(jsonObject.getString("name")).append(",");
-                        if (i == arrays.size() - 1) {
-                            sb.setLength(sb.length() - 1);
-                            sb.append(") values(");
-                        }
+                StringBuilder sb = new StringBuilder();
+                sb.append("insert into ").append(tableName).append(" ( ");
+                for (int i = 0; i < arrays.size(); i++) {
+                    JSONObject jsonObject = arrays.getJSONObject(i);
+                    sb.append(jsonObject.getString("name")).append(",");
+                    if (i == arrays.size() - 1) {
+                        sb.setLength(sb.length() - 1);
+                        sb.append(") values(");
                     }
+                }
                 String type = "TEXT";
                 for (int i = 0; i < arrays.size(); i++) {
                     JSONObject jsonObject = arrays.getJSONObject(i);
@@ -377,7 +393,24 @@ public class JsMethodAdapter {
                     }
                 }
 
+
+                JSONObject jsonObject = new JSONObject();
+
+
+                try {
+
                     getDatabase().execSQL(sb.toString());
+                    jsonObject.put("code",SUCCESS);
+                    jsonObject.put("msg","插入成功");
+                }catch (SQLException e){
+                    jsonObject.put("code",FAILD);
+                    jsonObject.put("msg","插入失败");
+                }finally {
+                    function.onCallBack(jsonObject.toJSONString());
+
+                }
+
+
 
 
             }
@@ -397,9 +430,28 @@ public class JsMethodAdapter {
                 String tableName = json.getString("tableName");
                 StringBuilder sb = new StringBuilder();
                 sb.append("select * from ").append(tableName);
-                List<Map<String,String>> list =   getDatabase().find(sb.toString());
-               String result =  JSONArray.toJSONString(list);
-               function.onCallBack(result);
+
+
+                JSONObject json = new JSONObject();
+
+
+                try {
+
+                    List<Map<String,String>> list =   getDatabase().find(sb.toString());
+                    JSONArray result =  JSONArray.parseArray(JSON.toJSONString(list));
+                    json.put("code",SUCCESS);
+                    json.put("msg","查询成功");
+                    json.put("data",result);
+                }catch (SQLException e){
+                    json.put("code",FAILD);
+                    json.put("msg","查询失败");
+                }finally {
+                    function.onCallBack(json.toJSONString());
+
+                }
+
+
+
 
 
             }
@@ -445,7 +497,21 @@ public class JsMethodAdapter {
                         sb.append(jsonObject.getString("name")).append("='").append(jsonObject.getString("value")).append("'");
                         break;
                 }
-                getDatabase().execSQL(sb.toString());
+                JSONObject result = new JSONObject();
+
+
+                try {
+
+                    getDatabase().execSQL(sb.toString());
+                    result.put("code",SUCCESS);
+                    result.put("msg","修改成功");
+                }catch (SQLException e){
+                    result.put("code",FAILD);
+                    result.put("msg","修改失败");
+                }finally {
+                    function.onCallBack(result.toJSONString());
+
+                }
 
 
             }
@@ -476,7 +542,21 @@ public class JsMethodAdapter {
                         break;
                 }
 
-                getDatabase().execSQL(sb.toString());
+                JSONObject result = new JSONObject();
+
+
+                try {
+
+                    getDatabase().execSQL(sb.toString());
+                    result.put("code",SUCCESS);
+                    result.put("msg","删除成功");
+                }catch (SQLException e){
+                    result.put("code",FAILD);
+                    result.put("msg","删除失败");
+                }finally {
+                    function.onCallBack(result.toJSONString());
+
+                }
 
 
             }
@@ -496,9 +576,19 @@ public class JsMethodAdapter {
                 String tableName = json.getString("tableName");
                 StringBuilder sb = new StringBuilder();
                 sb.append("drop table if exists ").append(tableName);
+                JSONObject result = new JSONObject();
+                try {
 
-                getDatabase().execSQL(sb.toString());
+                    getDatabase().execSQL(sb.toString());
+                    result.put("code",SUCCESS);
+                    result.put("msg","删除成功");
+                }catch (SQLException e){
+                    result.put("code",FAILD);
+                    result.put("msg","删除失败");
+                }finally {
+                    function.onCallBack(result.toJSONString());
 
+                }
 
             }
         });

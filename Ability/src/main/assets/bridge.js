@@ -151,8 +151,8 @@
        	window.WebViewJavascriptBridge.callHandler(
        				'getPhoneDeviceName',
        				function(responseData) {
-       					if(callback != null)
-       						callback(responseData)
+       					if(options.callback != null)
+       						options.callback(responseData)
        				}
        			);
               },
@@ -167,8 +167,8 @@
                         "params": str
                     },
         function(responseData) {
-            if(callback != null)
-                callback(responseData)
+            if(options.callback != null)
+                options.callback(responseData)
                  }
                 );
          },
@@ -183,8 +183,8 @@
                                  "params": str
                              },
                  function(responseData) {
-                     if(callback != null)
-                         callback(responseData)
+                     if(options.callback != null)
+                         options.callback(responseData)
                           }
                          );
                   },
@@ -199,8 +199,8 @@
                                        "params": str
                                    },
                        function(responseData) {
-                           if(callback != null)
-                               callback(responseData)
+                           if(options.callback != null)
+                               options.callback(responseData)
                                 }
                                );
                         },
@@ -216,8 +216,8 @@
                                        "params": str
                                    },
                        function(responseData) {
-                           if(callback != null)
-                               callback(responseData)
+                           if(options.callback != null)
+                               options.callback(responseData)
                                 }
                                );
                         },
@@ -230,7 +230,11 @@
                                     window.WebViewJavascriptBridge.callHandler(
                                        'updateInfo', {
                                            "params": str
-                                       }
+                                       },
+          function(responseData) {
+                               if(options.callback != null)
+                                   options.callback(responseData)
+                                    }
                                    );
                             },
 
@@ -244,7 +248,11 @@
                                          window.WebViewJavascriptBridge.callHandler(
                                             'dropTable', {
                                                 "params": str
-                                            }
+                                            },
+               function(responseData) {
+                                    if(options.callback != null)
+                                        options.callback(responseData)
+                                         }
                                         );
                                  }
 	}
