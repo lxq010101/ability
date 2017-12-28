@@ -58,14 +58,7 @@ public class WebViewActivity extends Activity implements OnClickListener {
         webView.setDefaultHandler(new DefaultHandler());
         // 设置setWebChromeClient对象
         webView.setWebChromeClient(wvcc);
-        webView.setWebViewClient(new HttpsWebClient(getApplicationContext()));
-        webView.setWebViewClient(new WebViewClient() {
 
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                super.onReceivedSslError(view, handler, error);
-            }
-        });
 //		// WebView加载web资源
 //		path = "file://" + getIntent().getStringExtra("path");
         //工单调度
@@ -73,8 +66,8 @@ public class WebViewActivity extends Activity implements OnClickListener {
             webView.loadUrl(getIntent().getStringExtra("webAppExtractPath") + url);
         } else {
             url = new StringBuilder().append(url).append("?userId=").append(getIntent().getStringExtra("userId")).toString();
-            webView.loadUrl(url);
-//            webView.loadUrl("file:///android_asset/basic.html");
+//            webView.loadUrl(url);
+            webView.loadUrl("file:///android_asset/basic.html");
         }
         // 覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
         JsMethodAdapter.register(webView);

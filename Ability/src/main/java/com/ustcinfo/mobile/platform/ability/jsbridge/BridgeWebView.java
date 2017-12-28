@@ -5,20 +5,36 @@ import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.http.SslError;
 import android.os.Build;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.security.KeyStore;
+import java.security.SecureRandom;
+import java.security.cert.CertificateFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 @TargetApi(19)
 @SuppressLint("SetJavaScriptEnabled")
@@ -84,8 +100,7 @@ public class BridgeWebView extends WebView implements WebViewJavascriptBridge {
 			WebView.setWebContentsDebuggingEnabled(true);
 		}
 		this.setWebViewClient(new BridgeWebViewClient());
-		progressBar = ProgressDialog.show(BridgeWebView.this.getContext(),null,"页面加载中，请稍后..");  
-
+		progressBar = ProgressDialog.show(BridgeWebView.this.getContext(),null,"页面加载中，请稍后..");
 	}
 
 	private void handlerReturnData(String url) {
@@ -115,7 +130,7 @@ public class BridgeWebView extends WebView implements WebViewJavascriptBridge {
 				flushMessageQueue();
 				return true;
 			} else {
-				progressBar.show();  
+				progressBar.show();
 				return super.shouldOverrideUrlLoading(view, url);
 			}
 		}
@@ -151,6 +166,35 @@ public class BridgeWebView extends WebView implements WebViewJavascriptBridge {
 				String description, String failingUrl) {
 			super.onReceivedError(view, errorCode, description, failingUrl);
 		}
+
+		@Override
+		public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+			checkCertificate(handler, view.getUrl());
+
+		}
+	}
+
+
+	private void checkCertificate(final SslErrorHandler handler, String url) {
+		OkHttpClient.Builder builder;
+		try {
+			builder = setCertificates(new OkHttpClient.Builder(), getContext().getAssets().open("ustcinfo.cer"));
+		} catch (IOException e) {
+			builder = new OkHttpClient.Builder();
+		}
+		Request request = new Request.Builder().url(url)
+				.build();
+		builder.build().newCall(request).enqueue(new Callback() {
+			@Override
+			public void onFailure(Call call, IOException e) {
+				handler.cancel();
+			}
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException {
+				handler.proceed();
+			}
+		});
 	}
 
 	@Override
@@ -192,6 +236,45 @@ public class BridgeWebView extends WebView implements WebViewJavascriptBridge {
 		}
 	}
 
+	public OkHttpClient.Builder setCertificates(OkHttpClient.Builder client, InputStream... certificates) {
+		try {
+			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+			keyStore.load(null);
+			int index = 0;
+			for (InputStream certificate : certificates) {
+				String certificateAlias = Integer.toString(index++);
+				keyStore.setCertificateEntry(certificateAlias, certificateFactory.generateCertificate(certificate));
+
+				try {
+					if (certificate != null)
+						certificate.close();
+				} catch (IOException e) {
+				}
+			}
+
+			SSLContext sslContext = SSLContext.getInstance("TLS");
+
+			TrustManagerFactory trustManagerFactory =
+					TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+
+			trustManagerFactory.init(keyStore);
+			sslContext.init
+					(
+							null,
+							trustManagerFactory.getTrustManagers(),
+							new SecureRandom()
+					);
+
+			client.sslSocketFactory(sslContext.getSocketFactory());
+			client.hostnameVerifier((s, sslSession) -> true);
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return client;
+	}
 	private void dispatchMessage(Message m) {
 		String messageJson = m.toJson();
 		// escape special characters for json string
