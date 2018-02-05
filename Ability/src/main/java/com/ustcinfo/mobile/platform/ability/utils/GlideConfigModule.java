@@ -16,6 +16,7 @@ public class GlideConfigModule extends AppGlideModule {
     /**
      * MemorySizeCalculator类通过考虑设备给定的可用内存和屏幕大小想出合理的默认大小.
      * 通过LruResourceCache进行缓存。
+     *
      * @param context
      * @param builder
      */
@@ -26,9 +27,10 @@ public class GlideConfigModule extends AppGlideModule {
                 .build();
         builder.setMemoryCache(new LruResourceCache(calculator.getMemoryCacheSize()));
     }
+
     @Override
     public boolean isManifestParsingEnabled() {
-        return false;
+        return true;
     }
 
 }
